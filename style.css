@@ -7,31 +7,64 @@ body {
     height: 100%;
     font-family: "open sans" ;
     color: white;
-}
+}   
 .container {
     display: flex;
     width: 100vw; height: 100vh;
     background-color: rgb(152, 195, 252);
-    padding: 10px;
+    padding: 12px;
 }
 .hero {
     height: 96vh; width: 65%;
     background-image: url("img/fundoHero.png");
     background-size: cover;
     background-repeat: none;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 30px;
     padding: 10px;
 }
 .textoGrande {
+    font-size: 60px;
+    background-color: rgba(30, 99, 155, 0.6);
+    padding: 10px;
+}
+.textoPequeno {
+    font-size: 30px;
+    background-color: rgba(11, 63, 105, 0.6);
+    padding: 10px;
+    width: 20vw;
+}
+
+.right {
+    width:45vw; height: 98vh;
     display: block;
-    margin: auto;
+}
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.textoLogin {
+    font-size: 60px;
+    border-left: 10px navy solid;
+    padding: 0 15px;
+    margin: 30px;
 }
 .buttonLogin {
     width: 24vw; height: 7vh;
     background-color: rgb(231, 146, 34);
     border: none;
+    text-align: center;
     border-radius: 10px;
     color: white;
     font-size: 25px;
+    transition: 0.8s;
+}
+.buttonLogin:hover {
+    background-color: white;
+    color:  rgb(231, 146, 34);
 }
