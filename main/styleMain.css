@@ -1,0 +1,49 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    height: 100%;
+    font-family: "open sans";
+    color: white;
+    background: linear-gradient(190deg, rgb(152, 195, 252), rgb(103, 128, 255));
+    background-repeat: no-repeat;    
+}
+.container {
+    width: 100vw; height: 100vh;
+    background: linear-gradient(25deg, rgb(152, 195, 252), rgb(92, 119, 255));
+    background-repeat: no-repeat;  
+}
+.header {
+    width: 100vw; height: 5vh;
+    background-color: white;
+    font-size: 10px;
+    color: rgb(152, 195, 252);
+    text-align: center;
+    padding: 5px;
+}
+.containerCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+}
+.bemVindo {
+    width: 90vw;
+    font-size: 30px;
+}
+.agendaAll {
+    width: 90vw; height: 80vh;
+    background-color: white;
+    border-radius: 20px;
+}
+.eixoX {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    color: black;
+    font-size: calc(1rem * 0.7);
+    font-weight: 100;
+}
