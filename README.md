@@ -26,10 +26,9 @@ O projeto utiliza o Vue.js 3, um framework JavaScript que permite criar interfac
 
 Nesta versão, foi integrado por meio de uma CDN diretamente no HTML, sem utilizar ferramentas como Vite.
 
-```html
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="function.js"></script>
-```html
+
 ## Como utilizar o site
 
 ### 1. Navegação pelo calendário
