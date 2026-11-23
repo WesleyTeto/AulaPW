@@ -17,13 +17,24 @@
 
 <body>
     <div id="app" class="container">
+        <header class="topo">
+            <div class="logo">
+                <a href="../index.html"> <button class="botaoVoltar"><i
+                            class="fa-solid fa-left-long"></i>HOME</button></a>
+                <i class="fa-solid fa-cloud-sun"></i>
+                <h2>AgendaTempo</h2>
+            </div>
+        </header>
         <div class="containerCenter">
             <div class="ctrlMes">
-                <button class="botaoMes " @click="mesAnterior"><i class="fa-solid fa-arrow-left"></i></button>
+                <button class="botaoMes " @click="mesAnterior"><i class="fa-solid fa-chevron-left"></i></button>
                 <h2>{{ nomeMes }} {{ anoAtual }}</h2>
-                <button class="botaoMes" @click="proximoMes"><i class="fa-solid fa-arrow-right"></i></button>
+                <button class="botaoMes" @click="proximoMes"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
+
+            <!-- AGENDA -->
             <div class="agendaAll">
+
                 <div class="eixoX">
                     <h1>Domingo</h1>
                     <h1>Segunda</h1>
@@ -33,20 +44,211 @@
                     <h1>Sexta</h1>
                     <h1>Sábado</h1>
                 </div>
+
                 <div class="agendaDias">
-                    <!-- Espaços antes do primeiro dia -->
                     <div class="dia vazio" v-for="vazio in diasVazios" :key="'vazio-' + vazio">
                     </div>
 
-                    <!-- Dias gerados automaticamente -->
-                    <div class="dia" v-for="dia in diasDoMes" :key="dia">
+                    <div class="dia" v-for="dia in diasDoMes" :key="dia" @click="selecionarDia(dia)">
 
-                        <span>{{ dia }}</span>
+                        <div class="conteudoDia">
+                            <span class="numeroDia">{{ dia }}</span>
+
+                            <div class="resumoCompromissos" v-if="compromissosPorDia[dia]">
+
+                                <div class="resumoItem" v-for="compromisso in compromissosPorDia[dia].slice(0, 2)"
+                                    :key="compromisso.horario + compromisso.descricao">
+
+                                    <strong>{{ compromisso.horario }}</strong>
+                                    <span>{{ compromisso.descricao }}</span>
+                                </div>
+
+                                <small v-if="compromissosPorDia[dia].length > 2">
+                                    +{{ compromissosPorDia[dia].length - 2 }} mais
+                                </small>
+
+                            </div>
+                        </div>
 
                     </div>
+
                 </div>
             </div>
-        </div>
+
+            <!-- Tela expandida do dia -->
+            <Transition name="expandir">
+
+                <div class="fundoExpandido" v-if="diaExpandido">
+
+                    <div class="diaExpandido">
+
+                        <div class="cabecalhoDia">
+
+                            <div>
+                                <h2>{{ diaSelecionado }} de {{ nomeMes }} de {{ anoAtual }}</h2>
+                                <p>Organize seus compromissos.</p>
+                            </div>
+
+                            <button @click="fecharDia">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                Voltar
+                            </button>
+
+                        </div>
+                        <!-- agendamento de compromisso -->
+                        <section class="blocoDia">
+
+                            <h3>
+                                <i class="fa-solid fa-calendar-check"></i>
+                                Compromissos
+                            </h3>
+
+                            <div class="formCompromisso">
+
+                                <input type="time" v-model="novoHorario">
+
+                                <input type="text" v-model="novaDescricao" placeholder="Descrição do compromisso">
+
+                                <button @click="adicionarCompromisso">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Adicionar
+                                </button>
+
+                            </div>
+
+                            <div class="listaCompromissos">
+
+                                <p v-if="compromissosDoDia.length === 0">
+                                    Nenhum compromisso cadastrado.
+                                </p>
+
+                                <div class="itemCompromisso" v-for="(compromisso, index) in compromissosDoDia"
+                                    :key="index">
+
+                                    <strong>{{ compromisso.horario }}</strong>
+                                    <span>{{ compromisso.descricao }}</span>
+
+                                    <button @click="removerCompromisso(compromisso)" title="Excluir compromisso">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+                            <!-- temperatura de cada dia -->
+                            <section class="blocoDia">
+
+                                <h3>
+                                    <i class="fa-solid fa-cloud-sun"></i>
+                                    Previsão do tempo
+                                </h3>
+
+                                <div class="previsaoDoDia" v-if="previsaoDoDia(diaSelecionado)">
+
+                                    <p>
+                                        Temperatura máxima: <strong class="blue">{{
+                                            previsaoDoDia(diaSelecionado).temperaturaMaxima }}</strong>
+                                    </p>
+
+                                    <p>
+                                        Temperatura mínima: <strong class="blue">{{
+                                            previsaoDoDia(diaSelecionado).temperaturaMinima }}</strong>
+                                    </p>
+
+                                    <p>
+                                        Probabilidade de chuva:
+                                        <strong class="blue">{{ previsaoDoDia(diaSelecionado).probabilidadeChuva
+                                            }}%</strong>
+                                    </p>
+
+                                </div>
+
+                                <p v-else>
+                                    Previsão indisponível para esta data.
+                                </p>
+
+                            </section>
+                        </section>
+
+                    </div>
+
+                </div>
+
+            </Transition>
+            <!-- Painel de resumo -->
+            <section class="painelResumo">
+
+                <div class="resumoSemana">
+
+                    <h2>
+                        <i class="fa-solid fa-cloud-sun"></i>
+                        Previsão da semana
+                    </h2>
+                    <div class="diasSemana">
+
+                        <div class="itemSemana" v-for="(previsao, index) in previsaoSemana" :key="previsao.data">
+
+                            <strong>
+                                {{ index === 0 ? 'Hoje' : nomeDiaSemana(previsao.data) }}
+                            </strong>
+
+                            <span>{{ previsao.data.split('-').reverse().join('/') }}</span>
+
+                            <div class="temperaturasSemana">
+                                <strong>{{ previsao.temperaturaMaxima }}°</strong>
+                                <span>{{ previsao.temperaturaMinima }}°</span>
+                            </div>
+
+                            <small>
+                                Chuva: {{ previsao.probabilidadeChuva }}%
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Compromissos do mês -->
+                <div class="resumoMes">
+
+                    <h2>
+                        <i class="fa-solid fa-calendar-check"></i>
+                        Compromissos do mês
+                    </h2>
+
+                    <div class="listaResumoMes">
+
+                        <p v-if="todosCompromissosDoMes.length === 0">
+                            Nenhum compromisso cadastrado neste mês.
+                        </p>
+
+                        <div class="itemResumoMes" v-for="(compromisso, index) in todosCompromissosDoMes" :key="index"
+                            @click="selecionarDia(compromisso.dia)">
+
+                            <div class="dataResumo">
+                                <strong>{{ String(compromisso.dia).padStart(2, '0') }}</strong>
+                                <span> - {{ nomeMes }}</span>
+                            </div>
+
+                            <div class="infoResumo">
+                                <strong>{{ compromisso.horario }}</strong>
+                                <span> - {{ compromisso.descricao }}</span>
+                            </div>
+                            <button class="trashMain" @click.stop="removerCompromisso(compromisso)" title="Excluir compromisso">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+        </div><!-- container center -->
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="function.js"></script>
