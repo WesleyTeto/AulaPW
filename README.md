@@ -1,6 +1,6 @@
-# AgendaClima
+# AgendaTempo
 
-O **AgendaClima** é uma aplicação web que combina uma agenda mensal com a previsão do tempo, facilitando a organização de compromissos e o planejamento de atividades.
+O **AgendaTempo** é uma aplicação web que combina uma agenda mensal com a previsão do tempo, facilitando a organização de compromissos e o planejamento de atividades.
 
 ## Funcionalidades
 
@@ -74,12 +74,14 @@ Ao clicar em um compromisso dessa lista, é possível abrir diretamente a data c
 
 Este projeto foi desenvolvido por:
 
-- **Leonardo Gabriel** — Desenvolvimento.
-
-### Contribuições
-
-Espaço destinado aos colaboradores que participaram do desenvolvimento do projeto:
-
-- **Nome do colaborador:** Descrição da contribuição.
-- **Nome do colaborador:** Descrição da contribuição.
+- Kleber
+- Leonardo
+- Lucas J.
+- Luigi
+- Luiz
+- Silvio
+- Sofia
+- Victor
+- Vitor S.
+- Wesley
 
